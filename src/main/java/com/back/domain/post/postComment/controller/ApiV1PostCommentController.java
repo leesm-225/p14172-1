@@ -73,7 +73,7 @@ public class ApiV1PostCommentController {
    }
 
    @PutMapping("/{id}")
-   @Transactional
+   @Transactional//트랜잭션을 붙이지 않을 경우 findById와
    public RsData<Void> modify(
            @PathVariable int postId,
            @PathVariable int id,
