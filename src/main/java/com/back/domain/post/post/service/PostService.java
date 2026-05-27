@@ -36,9 +36,8 @@ public class PostService {
         post.modify(title, content);
     }
 
-    public void writeComment(Post post, String content) {
-        post.addComment(content);
-    }
+    public PostComment writeComment(Post post, String content) {
+        return post.addComment(content);}
 
     public boolean deleteComment(Post post, PostComment postComment) {
         return post.deleteComment(postComment);
@@ -55,5 +54,9 @@ public class PostService {
 
     public Optional<Post> findLatest() {
         return postRepository.findFirstByOrderByIdDesc();
+    }
+
+    public void flush() {
+        postRepository.flush();
     }
 }
