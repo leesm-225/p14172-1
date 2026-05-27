@@ -5,6 +5,8 @@ import com.back.domain.post.post.entity.Post;
 import com.back.domain.post.post.service.PostService;
 
 import com.back.global.rsData.RsData;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -20,6 +22,8 @@ import java.util.Map;
 @RestController // @Controller + @ResponseBody
 @RequestMapping("/api/v1/posts")
 @RequiredArgsConstructor
+
+@Tag(name="ApiPostController", description = "API 글 컨트롤러")
 public class ApiV1PostController {
     private final PostService postService;
 
@@ -36,6 +40,7 @@ public class ApiV1PostController {
 
     @PostMapping
     @Transactional
+    @Operation(summary = "작성")
     public RsData<PostDto> write(@Valid @RequestBody PostWriteReqBody reqBody) {
         Post post = postService.write(reqBody.title, reqBody.content);
 
@@ -49,6 +54,7 @@ public class ApiV1PostController {
 
     @GetMapping
     @Transactional(readOnly = true)
+    @Operation(summary = "다건 조회")
     public List<PostDto> getItems() {
         List<Post> items = postService.findAll();
 
@@ -60,6 +66,7 @@ public class ApiV1PostController {
 
     @GetMapping("/{id}")
     @Transactional(readOnly = true)
+    @Operation(summary = "단건 조회")
     public PostDto getItem(@PathVariable int id) {
         Post post = postService.findById(id).get();
 
@@ -67,7 +74,9 @@ public class ApiV1PostController {
     }
 
 
-    @DeleteMapping("/{id}")    @Transactional
+    @DeleteMapping("/{id}")
+    @Transactional
+    @Operation(summary = "삭제")
     public RsData<Void> delete(@PathVariable int id) {
         Post post = postService.findById(id).get();
 
@@ -92,6 +101,7 @@ public class ApiV1PostController {
 
     @PutMapping("/{id}")
     @Transactional
+    @Operation(summary = "수정")
     public RsData<Void> modify(
             @PathVariable int id,
             @Valid @RequestBody PostModifyReqBody reqBody
